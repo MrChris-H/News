@@ -3,7 +3,7 @@
 ## Setup
 
 Two files must be created to gain access to the necessary environments. an example file (env-example has been provided)
-\n env.development containing:
+<br /> env.development containing:
 
 ```
 PGDATABASE=nc_news
