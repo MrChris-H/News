@@ -64,17 +64,35 @@ describe("The Server", () => {
             expect(res.body.msg).toBe("article does not exist");
           });
       });
-      it('Status 400, msg: "bad article id"', () => {
+      it('Status 400, msg: "invalid input type"', () => {
         return request(app)
           .get("/api/articles/not_an_id")
           .expect(400)
           .then((res) => {
-            expect(res.body.msg).toBe("bad article id");
+            expect(res.body.msg).toBe("invalid input type");
           });
       });
     });
     describe(".PATCH", () => {
-      it("Status 201, and returns ", () => {});
+      it("Status 201, and returns body with article object with added votes", () => {
+        return request(app)
+          .patch("/api/articles/4")
+          .send({ inc_votes: 10 })
+          .expect(201)
+          .then((res) => {
+            expect(res.body.article).toEqual(
+              expect.objectContaining({
+                article_id: 4,
+                title: "Student SUES Mitch!",
+                topic: "mitch",
+                author: "rogersop",
+                body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
+                created_at: "2020-05-06T01:14:00.000Z",
+                votes: 10,
+              })
+            );
+          });
+      });
     });
   });
 });
