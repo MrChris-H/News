@@ -1,7 +1,7 @@
 const app = require("../app");
 const request = require("supertest");
 const connection = require("../db/connection");
-const data = require("../db/data");
+const data = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
 
 afterAll(() => connection.end());
@@ -56,14 +56,25 @@ describe("The Server", () => {
             );
           });
       });
-      it('Status 400, msg: "id does not exist"', () => {
+      it('Status 400, msg: "article does not exist"', () => {
+        return request(app)
+          .get("/api/articles/9999999")
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("article does not exist");
+          });
+      });
+      it('Status 400, msg: "bad article id"', () => {
         return request(app)
           .get("/api/articles/not_an_id")
           .expect(400)
           .then((res) => {
-            expect(res.body.msg).toBe("id does not exist");
+            expect(res.body.msg).toBe("bad article id");
           });
       });
+    });
+    describe(".PATCH", () => {
+      it("Status 201, and returns ", () => {});
     });
   });
 });
