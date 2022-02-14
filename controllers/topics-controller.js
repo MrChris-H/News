@@ -1,6 +1,6 @@
-const { fetchTopics } = require("../models/topics-methods");
+const { fetchTopics, fetchArticle } = require("../models/topics-methods");
 
-exports.getTopics = (req, res) => {
+exports.getTopics = (req, res, next) => {
   fetchTopics()
     .then((topics) => {
       res.status(200).send({ topics });
@@ -8,4 +8,12 @@ exports.getTopics = (req, res) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.getArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  fetchArticle(article_id).then((article) => {
+    console.log({ article });
+    res.status(200).send({ article });
+  });
 };
