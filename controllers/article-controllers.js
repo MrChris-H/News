@@ -7,7 +7,13 @@ exports.getArticle = (req, res, next) => {
       res.status(200).send({ article });
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
+};
+
+exports.patchArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  fetchArticle(article_id).then((article) => {
+    console.log(article);
+  });
 };

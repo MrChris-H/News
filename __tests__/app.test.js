@@ -64,12 +64,12 @@ describe("The Server", () => {
             expect(res.body.msg).toBe("article does not exist");
           });
       });
-      it('Status 400, msg: "bad article id"', () => {
+      it('Status 400, msg: "invalid input type"', () => {
         return request(app)
           .get("/api/articles/not_an_id")
           .expect(400)
           .then((res) => {
-            expect(res.body.msg).toBe("bad article id");
+            expect(res.body.msg).toBe("invalid input type");
           });
       });
     });
