@@ -1,3 +1,4 @@
+
 # Northcoders News API
 
 ## Setup
@@ -14,3 +15,4 @@ PGDATABASE=nc_news
 ```
 PGDATABASE=nc_news_test
 ```
+
