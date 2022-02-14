@@ -12,8 +12,13 @@ exports.getTopics = (req, res, next) => {
 
 exports.getArticle = (req, res, next) => {
   const { article_id } = req.params;
-  fetchArticle(article_id).then((article) => {
-    console.log({ article });
-    res.status(200).send({ article });
-  });
+  fetchArticle(article_id)
+    .then((article) => {
+      console.log({ article });
+      res.status(200).send({ article });
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };

@@ -56,6 +56,14 @@ describe("The Server", () => {
             );
           });
       });
+      it('Status 400, msg: "id does not exist"', () => {
+        return request(app)
+          .get("/api/articles/not_an_id")
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("id does not exist");
+          });
+      });
     });
   });
 });
