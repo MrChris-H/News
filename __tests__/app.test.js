@@ -7,7 +7,15 @@ const seed = require("../db/seeds/seed");
 afterAll(() => connection.end());
 beforeEach(() => seed(data));
 
-describe("app.js", () => {
+describe("The Server", () => {
+  test('Status 404, msg: "path not found" when invalid endpoint entered', () => {
+    return request(app)
+      .get("/Not-An-API")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("path not found");
+      });
+  });
   describe("/api/topics", () => {
     describe(".GET", () => {
       it("Status 200, returns body with topics objects", () => {
