@@ -5,3 +5,4 @@ exports.fetchTopics = () => {
     return rows;
   });
 };
+
