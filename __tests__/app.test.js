@@ -56,7 +56,7 @@ describe("The Server", () => {
             );
           });
       });
-      it('Status 404, msg: "article does not exist"', () => {
+      it("Status 404, valid input for article that does not exist", () => {
         return request(app)
           .get("/api/articles/9999999")
           .expect(404)
@@ -64,12 +64,88 @@ describe("The Server", () => {
             expect(res.body.msg).toBe("article does not exist");
           });
       });
-      it('Status 400, msg: "invalid input type"', () => {
+      it('Status 400, msg: "bad request"', () => {
         return request(app)
           .get("/api/articles/not_an_id")
           .expect(400)
           .then((res) => {
-            expect(res.body.msg).toBe("invalid input type");
+            expect(res.body.msg).toBe("bad request");
+          });
+      });
+    });
+    describe(".PATCH", () => {
+      it("Status 201, and returns body with article object with added votes", () => {
+        return request(app)
+          .patch("/api/articles/4")
+          .send({ inc_votes: 10 })
+          .expect(201)
+          .then((res) => {
+            expect(res.body.article).toEqual(
+              expect.objectContaining({
+                article_id: 4,
+                title: "Student SUES Mitch!",
+                topic: "mitch",
+                author: "rogersop",
+                body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
+                created_at: "2020-05-06T01:14:00.000Z",
+                votes: 10,
+              })
+            );
+          });
+      });
+      it("Status 201, and returns body with article object with added votes", () => {
+        return request(app)
+          .patch("/api/articles/1")
+          .send({ inc_votes: -10 })
+          .expect(201)
+          .then((res) => {
+            expect(res.body.article).toEqual(
+              expect.objectContaining({
+                article_id: 1,
+                title: "Living in the shadow of a great man",
+                topic: "mitch",
+                author: "butter_bridge",
+                body: "I find this existence challenging",
+                created_at: "2020-07-09T20:11:00.000Z",
+                votes: 90,
+              })
+            );
+          });
+      });
+      it("Status 404, valid id type but the article does not exist", () => {
+        return request(app)
+          .patch("/api/articles/99999")
+          .send({ inc_votes: 10 })
+          .expect(404)
+          .then((res) => {
+            expect(res.body.msg).toBe("article does not exist");
+          });
+      });
+      it("Status 400, invalid id type is passed", () => {
+        return request(app)
+          .patch("/api/articles/not_an_id")
+          .send({ inc_votes: 10 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("bad request");
+          });
+      });
+      it("Status 400, no inc_votes on request body", () => {
+        return request(app)
+          .patch("/api/articles/2")
+          .send({ not_correct: 10 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("bad request");
+          });
+      });
+      it("Status 400, invalid inc_votes", () => {
+        return request(app)
+          .patch("/api/articles/2")
+          .send({ inc_votes: "not_number" })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("bad request");
           });
       });
     });

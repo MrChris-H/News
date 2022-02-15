@@ -3,5 +3,6 @@ exports.badPath = (req, res) => {
 };
 
 exports.serverErr = (err, req, res, next) => {
+  console.log(err);
   res.status(500).send({ msg: "internal server error" });
 };
