@@ -3,9 +3,12 @@ const {
   getArticle,
   patchArticle,
 } = require("./controllers/article-controllers");
-const { customErr } = require("./controllers/custom-error-controller");
-const { badPath, serverErr } = require("./controllers/http-error-controller");
-const { sqlErr } = require("./controllers/sql-error-controller");
+const { customErr } = require("./controllers/errors/custom-error-controller");
+const {
+  badPath,
+  serverErr,
+} = require("./controllers/errors/http-error-controller");
+const { sqlErr } = require("./controllers/errors/sql-error-controller");
 const { getTopics } = require("./controllers/topics-controller");
 
 const app = express();
