@@ -150,4 +150,20 @@ describe("The Server", () => {
       });
     });
   });
+  describe("/api/users", () => {
+    it("Status 200, returns an object with an array of objects containing usernames", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.users).toHaveLength(4);
+          expect(res.body.users).toEqual([
+            { username: "butter_bridge" },
+            { username: "icellusedkars" },
+            { username: "rogersop" },
+            { username: "lurker" },
+          ]);
+        });
+    });
+  });
 });
