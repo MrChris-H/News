@@ -11,9 +11,3 @@ exports.getArticle = (req, res, next) => {
     });
 };
 
-exports.patchArticle = (req, res, next) => {
-  const { article_id } = req.params;
-  fetchArticle(article_id).then((article) => {
-    console.log(article);
-  });
-};
