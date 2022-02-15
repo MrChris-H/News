@@ -56,7 +56,7 @@ describe("The Server", () => {
             );
           });
       });
-      it('Status 404, msg: valid input for article that does not exist', () => {
+      it("Status 404, valid input for article that does not exist", () => {
         return request(app)
           .get("/api/articles/9999999")
           .expect(404)
@@ -91,6 +91,24 @@ describe("The Server", () => {
                 votes: 10,
               })
             );
+          });
+      });
+      it("Status 404, valid id type but the article does not exist", () => {
+        return request(app)
+          .patch("/api/articles/99999")
+          .send({ inc_votes: 10 })
+          .expect(404)
+          .then((res) => {
+            expect(res.body.msg).toBe("article does not exist");
+          });
+      });
+      it("Status 400, invalid id type is passed", () => {
+        return request(app)
+          .patch("/api/articles/not_an_id")
+          .send({ inc_votes: 10 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("invalid input type");
           });
       });
     });
