@@ -151,45 +151,71 @@ describe("The Server", () => {
     });
   });
   describe("/api/users", () => {
-    it("Status 200, returns an object with an array of objects containing usernames", () => {
-      return request(app)
-        .get("/api/users")
-        .expect(200)
-        .then((res) => {
-          expect(res.body.users).toHaveLength(4);
-          expect(res.body.users).toEqual([
-            { username: "butter_bridge" },
-            { username: "icellusedkars" },
-            { username: "rogersop" },
-            { username: "lurker" },
-          ]);
-        });
+    describe("GET", () => {
+      it("Status 200, returns an object with an array of objects containing usernames", () => {
+        return request(app)
+          .get("/api/users")
+          .expect(200)
+          .then((res) => {
+            expect(res.body.users).toHaveLength(4);
+            expect(res.body.users).toEqual([
+              { username: "butter_bridge" },
+              { username: "icellusedkars" },
+              { username: "rogersop" },
+              { username: "lurker" },
+            ]);
+          });
+      });
     });
   });
   describe("/api/articles", () => {
-    it("Status 200, returns an object containing an array of objects sorted by date in desc order", () => {
-      return request(app)
-        .get("/api/articles")
-        .expect(200)
-        .then((res) => {
-          expect(res.body.articles).toHaveLength(12);
-          res.body.articles.forEach((article) => {
-            expect(article).toEqual(
+    describe("GET", () => {
+      it("Status 200, returns an object containing an array of objects sorted by date in desc order", () => {
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+          .then((res) => {
+            expect(res.body.articles).toHaveLength(12);
+            res.body.articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                })
+              );
+            });
+            expect(res.body.articles).toBeSortedBy("created_at", {
+              descending: true,
+            });
+          });
+      });
+    });
+  });
+  describe("/api/articles/:article:id (comment count)", () => {
+    describe("GET", () => {
+      it("Status 200, endpoint should now respond with a comment count", () => {
+        return request(app)
+          .get("/api/articles/9")
+          .expect(200)
+          .then((res) => {
+            expect(res.body.article).toEqual(
               expect.objectContaining({
-                article_id: expect.any(Number),
-                title: expect.any(String),
-                topic: expect.any(String),
-                author: expect.any(String),
-                body: expect.any(String),
-                created_at: expect.any(String),
-                votes: expect.any(Number),
+                article_id: 9,
+                title: "They're not exactly dogs, are they?",
+                author: "butter_bridge",
+                body: "Well? Think about it.",
+                created_at: "2020-06-06T09:10:00.000Z",
+                votes: 0,
+                comments: "2",
               })
             );
           });
-          expect(res.body.articles).toBeSortedBy("created_at", {
-            descending: true,
-          });
-        });
+      });
     });
   });
 });
