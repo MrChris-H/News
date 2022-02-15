@@ -20,3 +20,10 @@ exports.updateArticle = (votes, id) => {
     return rows[0];
   });
 };
+
+exports.fetchArticles = () => {
+  const queryStr = `SELECT * FROM articles ORDER BY created_at desc`;
+  return db.query(queryStr).then(({ rows }) => {
+    return rows;
+  });
+};
