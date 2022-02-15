@@ -61,7 +61,7 @@ describe("The Server", () => {
           .get("/api/articles/9999999")
           .expect(404)
           .then((res) => {
-            expect(res.body.msg).toBe("article does not exist");
+            expect(res.body.msg).toBe("resource not found");
           });
       });
       it('Status 400, msg: "bad request"', () => {
@@ -118,7 +118,7 @@ describe("The Server", () => {
           .send({ inc_votes: 10 })
           .expect(404)
           .then((res) => {
-            expect(res.body.msg).toBe("article does not exist");
+            expect(res.body.msg).toBe("resource not found");
           });
       });
       it("Status 400, invalid id type is passed", () => {
@@ -148,6 +148,22 @@ describe("The Server", () => {
             expect(res.body.msg).toBe("bad request");
           });
       });
+    });
+  });
+  describe("/api/users", () => {
+    it("Status 200, returns an object with an array of objects containing usernames", () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.users).toHaveLength(4);
+          expect(res.body.users).toEqual([
+            { username: "butter_bridge" },
+            { username: "icellusedkars" },
+            { username: "rogersop" },
+            { username: "lurker" },
+          ]);
+        });
     });
   });
 });
