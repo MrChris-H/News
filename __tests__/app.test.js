@@ -56,7 +56,7 @@ describe("The Server", () => {
             );
           });
       });
-      it('Status 404, msg: "article does not exist"', () => {
+      it('Status 404, msg: valid input for article that does not exist', () => {
         return request(app)
           .get("/api/articles/9999999")
           .expect(404)
