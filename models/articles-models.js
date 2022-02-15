@@ -4,7 +4,7 @@ exports.fetchArticle = (id) => {
   return db
     .query(
       `
-    SELECT articles.article_id, articles.title,articles.topic, articles.author, articles.body, articles.created_at, articles.votes, COUNT(comment_id) AS comments
+    SELECT articles.article_id, articles.title,articles.topic, articles.author, articles.body, articles.created_at, articles.votes, COUNT(comment_id) AS comment_count
     FROM articles 
     LEFT JOIN comments
     ON comments.article_id = articles.article_id

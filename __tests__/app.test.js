@@ -211,7 +211,7 @@ describe("The Server", () => {
                 body: "Well? Think about it.",
                 created_at: "2020-06-06T09:10:00.000Z",
                 votes: 0,
-                comments: "2",
+                comment_count: "2",
               })
             );
           });
