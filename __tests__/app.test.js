@@ -61,7 +61,7 @@ describe("The Server", () => {
           .get("/api/articles/9999999")
           .expect(404)
           .then((res) => {
-            expect(res.body.msg).toBe("article does not exist");
+            expect(res.body.msg).toBe("resource not found");
           });
       });
       it('Status 400, msg: "bad request"', () => {
@@ -118,7 +118,7 @@ describe("The Server", () => {
           .send({ inc_votes: 10 })
           .expect(404)
           .then((res) => {
-            expect(res.body.msg).toBe("article does not exist");
+            expect(res.body.msg).toBe("resource not found");
           });
       });
       it("Status 400, invalid id type is passed", () => {
