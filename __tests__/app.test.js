@@ -56,10 +56,10 @@ describe("The Server", () => {
             );
           });
       });
-      it('Status 400, msg: "article does not exist"', () => {
+      it('Status 404, msg: "article does not exist"', () => {
         return request(app)
           .get("/api/articles/9999999")
-          .expect(400)
+          .expect(404)
           .then((res) => {
             expect(res.body.msg).toBe("article does not exist");
           });
