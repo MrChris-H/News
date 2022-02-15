@@ -22,7 +22,7 @@ exports.updateArticle = (votes, id) => {
 };
 
 exports.fetchArticles = () => {
-  const queryStr = `SELECT * FROM articles ORDER BY created_at desc;`;
+  const queryStr = `SELECT * FROM articles ORDER BY created_at DESC;`;
   return db.query(queryStr).then(({ rows }) => {
     return rows;
   });
