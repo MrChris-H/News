@@ -57,7 +57,6 @@ describe("The Server", () => {
           });
       });
       it("Status 404, valid input for article that does not exist", () => {
-
         return request(app)
           .get("/api/articles/9999999")
           .expect(404)
@@ -65,7 +64,7 @@ describe("The Server", () => {
             expect(res.body.msg).toBe("article does not exist");
           });
       });
-      it('Status 400, msg: "bad request"', () => 
+      it('Status 400, msg: "bad request"', () => {
         return request(app)
           .get("/api/articles/not_an_id")
           .expect(400)
