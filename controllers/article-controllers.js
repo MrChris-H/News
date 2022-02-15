@@ -1,4 +1,8 @@
-const { fetchArticle, updateArticle } = require("../models/articles-models");
+const {
+  fetchArticle,
+  updateArticle,
+  fetchArticles,
+} = require("../models/articles-models");
 const { checkExists } = require("../models/global-models");
 
 exports.getArticle = (req, res, next) => {
@@ -26,6 +30,16 @@ exports.patchArticle = (req, res, next) => {
   Promise.all(proms)
     .then(([article]) => {
       res.status(201).send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getArticles = (req, res, next) => {
+  fetchArticles()
+    .then((articles) => {
+      res.status(200).send({ articles });
     })
     .catch((err) => {
       next(err);
