@@ -300,6 +300,40 @@ describe("The Server", () => {
             expect(msg).toBe("resource not found");
           });
       });
+      it("Status 400, when article id is a bad input", () => {
+        return request(app)
+          .post("/api/articles/not_an_id/comments")
+          .send({
+            username: "icellusedkars",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, no username in body", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, no body in body", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "icellusedkars",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
   describe("/api/articles/ (comment count)", () => {
