@@ -249,6 +249,22 @@ describe("The Server", () => {
             expect(comments).toEqual([]);
           });
       });
+      it('"Status 404, when requesting and article_id that does not currently exist"', () => {
+        return request(app)
+          .get("/api/articles/999999/comments")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 400, when requesting with an article_id that is incorrect", () => {
+        return request(app)
+          .get("/api/articles/not_an_id/comments")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
 });
