@@ -1,6 +1,6 @@
 const res = require("express/lib/response");
 const { checkExists } = require("../models/global-models");
-const { fetchCommentsByArticleId } = require("../models/models-controllers");
+const { fetchCommentsByArticleId } = require("../models/comments-models");
 
 exports.getCommentsByArticleId = (req, res, next) => {
   const { article_id } = req.params;
