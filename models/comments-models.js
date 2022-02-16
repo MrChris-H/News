@@ -10,3 +10,18 @@ exports.fetchCommentsByArticleId = (article_id) => {
     return rows;
   });
 };
+
+exports.insertCommentByArticleId = (input, article_id) => {
+  const { username, body } = input;
+  const insertStr = `
+  INSERT INTO comments
+    (body, article_id, author)
+  VALUES 
+    ($1, $2, $3)
+    RETURNING*
+  ;`;
+  const queryArr = [body, article_id, username];
+  return db.query(insertStr, queryArr).then(({ rows }) => {
+    return rows[0];
+  });
+};
