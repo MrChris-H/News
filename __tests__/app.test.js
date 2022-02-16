@@ -218,4 +218,37 @@ describe("The Server", () => {
       });
     });
   });
+  describe("/api/articles/:article_id/comments", () => {
+    describe("GET", () => {
+      it("Status 200, responds with an object containing an array of comment objects for article_id", () => {
+        return request(app)
+          .get("/api/articles/1/comments")
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(11);
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, when requesting comments from an existing article with no comments returns obj with empty array", () => {
+        return request(app)
+          .get("/api/articles/2/comments")
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(0);
+            expect(comments).toEqual([]);
+          });
+      });
+    });
+  });
 });
