@@ -4,7 +4,7 @@ exports.fetchArticle = (id) => {
   return db
     .query(
       `
-    SELECT articles.*, COUNT(comment_id) AS comment_count
+    SELECT articles.*, CAST(COUNT(comment_id)AS INT) AS comment_count
     FROM articles 
     LEFT JOIN comments
     ON comments.article_id = articles.article_id
@@ -33,7 +33,7 @@ exports.updateArticle = (votes, id) => {
 
 exports.fetchArticles = () => {
   const queryStr = `
-  SELECT articles.*, COUNT(comment_id) AS comment_count
+  SELECT articles.*, CAST(COUNT(comment_id)AS INT) AS comment_count
   FROM articles 
   LEFT JOIN comments
   ON comments.article_id = articles.article_id

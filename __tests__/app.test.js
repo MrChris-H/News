@@ -211,7 +211,7 @@ describe("The Server", () => {
                 body: "Well? Think about it.",
                 created_at: "2020-06-06T09:10:00.000Z",
                 votes: 0,
-                comment_count: "2",
+                comment_count: 2,
               })
             );
           });
@@ -267,7 +267,7 @@ describe("The Server", () => {
       });
     });
   });
-  describe.only("/api/articles/ (comment count)", () => {
+  describe("/api/articles/ (comment count)", () => {
     describe("GET", () => {
       it("Status 200, endpoint should now respond with a comment count for each article", () => {
         return request(app)
@@ -285,7 +285,7 @@ describe("The Server", () => {
                   body: expect.any(String),
                   created_at: expect.any(String),
                   votes: expect.any(Number),
-                  comment_count: expect.any(String),
+                  comment_count: expect.any(Number),
                 })
               );
             });
