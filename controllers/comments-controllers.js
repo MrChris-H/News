@@ -24,12 +24,12 @@ exports.postCommentByArticleId = (req, res, next) => {
   const { article_id } = req.params;
   const { body } = req;
   const proms = [
-    insertCommentByArticleId(body, article_id),
     checkExists("articles", "article_id", article_id),
+    insertCommentByArticleId(body, article_id),
   ];
 
   Promise.all(proms)
-    .then(([comment]) => {
+    .then(([, comment]) => {
       res.status(201).send({ comment });
     })
     .catch((err) => {
