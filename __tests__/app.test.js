@@ -218,4 +218,53 @@ describe("The Server", () => {
       });
     });
   });
+  describe("/api/articles/:article_id/comments", () => {
+    describe("GET", () => {
+      it("Status 200, responds with an object containing an array of comment objects for article_id", () => {
+        return request(app)
+          .get("/api/articles/1/comments")
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(11);
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, when requesting comments from an existing article with no comments returns obj with empty array", () => {
+        return request(app)
+          .get("/api/articles/2/comments")
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(0);
+            expect(comments).toEqual([]);
+          });
+      });
+      it('"Status 404, when requesting and article_id that does not currently exist"', () => {
+        return request(app)
+          .get("/api/articles/999999/comments")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 400, when requesting with an article_id that is incorrect", () => {
+        return request(app)
+          .get("/api/articles/not_an_id/comments")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+    });
+  });
 });

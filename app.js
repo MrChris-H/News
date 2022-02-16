@@ -4,6 +4,9 @@ const {
   patchArticle,
   getArticles,
 } = require("./controllers/article-controllers");
+const {
+  getCommentsByArticleId,
+} = require("./controllers/comments-controllers");
 const { customErr } = require("./controllers/errors/custom-error-controllers");
 const {
   badPath,
@@ -21,6 +24,7 @@ app.get(`/api/articles/:article_id`, getArticle);
 app.patch(`/api/articles/:article_id`, patchArticle);
 app.get(`/api/users`, getUsers);
 app.get(`/api/articles/`, getArticles);
+app.get(`/api/articles/:article_id/comments`, getCommentsByArticleId);
 //--------------------------------------------------------------------------
 app.all("/*", badPath);
 //--------------------------------------------------------------------------
