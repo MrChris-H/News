@@ -9,7 +9,8 @@
     "test-utils": "jest utils",
     "test-app": "jest app",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "query" : "psql -f ./query.sql > .query.txt"
   },
   "repository": {
     "type": "git",
