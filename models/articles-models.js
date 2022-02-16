@@ -4,7 +4,7 @@ exports.fetchArticle = (id) => {
   return db
     .query(
       `
-    SELECT articles.article_id, articles.title,articles.topic, articles.author, articles.body, articles.created_at, articles.votes, COUNT(comment_id) AS comment_count
+    SELECT articles.*, COUNT(comment_id) AS comment_count
     FROM articles 
     LEFT JOIN comments
     ON comments.article_id = articles.article_id
@@ -32,8 +32,16 @@ exports.updateArticle = (votes, id) => {
 };
 
 exports.fetchArticles = () => {
-  const queryStr = `SELECT * FROM articles ORDER BY created_at DESC;`;
+  const queryStr = `
+  SELECT articles.*, COUNT(comment_id) AS comment_count
+  FROM articles 
+  LEFT JOIN comments
+  ON comments.article_id = articles.article_id
+  GROUP BY articles.article_id
+  ORDER BY created_at DESC
+  ;`;
   return db.query(queryStr).then(({ rows }) => {
+    console.log(rows);
     return rows;
   });
 };
