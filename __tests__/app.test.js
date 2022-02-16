@@ -211,7 +211,7 @@ describe("The Server", () => {
                 body: "Well? Think about it.",
                 created_at: "2020-06-06T09:10:00.000Z",
                 votes: 0,
-                comment_count: "2",
+                comment_count: 2,
               })
             );
           });
@@ -263,6 +263,32 @@ describe("The Server", () => {
           .expect(400)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("bad request");
+          });
+      });
+    });
+  });
+  describe("/api/articles/ (comment count)", () => {
+    describe("GET", () => {
+      it("Status 200, endpoint should now respond with a comment count for each article", () => {
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+          .then((res) => {
+            expect(res.body.articles).toHaveLength(12);
+            res.body.articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
           });
       });
     });

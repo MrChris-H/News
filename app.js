@@ -3,7 +3,7 @@ const {
   getArticle,
   patchArticle,
   getArticles,
-} = require("./controllers/article-controllers");
+} = require("./controllers/articles-controllers");
 const {
   getCommentsByArticleId,
 } = require("./controllers/comments-controllers");
