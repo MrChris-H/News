@@ -11,8 +11,7 @@ exports.fetchCommentsByArticleId = (article_id) => {
   });
 };
 
-exports.insertCommentByArticleId = (input, article_id) => {
-  const { username, body } = input;
+exports.insertCommentByArticleId = (username, body, article_id) => {
   const insertStr = `
   INSERT INTO comments
     (body, article_id, author)
