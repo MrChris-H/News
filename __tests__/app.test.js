@@ -3,6 +3,7 @@ const request = require("supertest");
 const connection = require("../db/connection");
 const data = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
+const { response } = require("../app");
 
 afterAll(() => connection.end());
 beforeEach(() => seed(data));
@@ -418,12 +419,20 @@ describe("The Server", () => {
             expect(msg).toBe("invalid order query");
           });
       });
-      it("Status 404, when an invalid topic filter is input", () => {
+      it("Status 404, when a topic filter is input that doesn't match current topics", () => {
         return request(app)
           .get("/api/articles?topic=not_a_topic")
           .expect(404)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 404, when a topic is valid but there are no articles for that topic", () => {
+        return request(app)
+          .get("/api/articles?topic=paper")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("no articles found for this topic");
           });
       });
     });
