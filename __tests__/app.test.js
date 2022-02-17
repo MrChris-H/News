@@ -358,6 +358,18 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
+      it("status 400, not a username", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "not_a_username",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
     });
   });
   describe("/api/articles/ (comment count)", () => {
