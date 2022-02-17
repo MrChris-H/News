@@ -41,6 +41,9 @@
   "PATCH /api/articles/:article_id": {
     "description": "updates the votes property of an article and returns the article",
     "queries": [],
+    "exampleRequest": {
+      "inc_votes": 1
+    },
     "exampleResponse": {
       "article": {
         "title": "Seafood substitutions are increasing",
@@ -48,7 +51,7 @@
         "author": "weegembump",
         "body": "Text from the article..",
         "created_at": 1527695953341,
-        "votes": 2
+        "votes": 3
       }
     }
   },
@@ -77,6 +80,10 @@
   "POST /api/articles/:article_id/comments": {
     "description": "inserts a new comment into the comments table then serves the comment as a response",
     "queries": [],
+    "exampleRequest": {
+      "username": "butter_bridge",
+      "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+    },
     "exampleResponse": {
       "comment": {
         "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
