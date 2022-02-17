@@ -362,4 +362,70 @@ describe("The Server", () => {
       });
     });
   });
+  describe("/api/articles/ (queries)", () => {
+    describe(".GET", () => {
+      it("Status 200, allow for client to sort by a valid column ", () => {
+        return request(app)
+          .get("/api/articles?sort_by=title")
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toBeSortedBy("title", {
+              descending: true,
+            });
+          });
+      });
+      it("Status 200, allow for client to choose between ASC and DESC order", () => {
+        return request(app)
+          .get("/api/articles?order=ASC")
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toBeSortedBy("created_at");
+          });
+      });
+      it("Status 200, Allow for filtering topics by topic", () => {
+        return request(app)
+          .get("/api/articles?topic=mitch")
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: "mitch",
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+      it("Status 400, when an invalid sort_by query is set", () => {
+        return request(app)
+          .get("/api/articles?sort_by=not_a_column")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid sort query");
+          });
+      });
+      it("Status 400, when an invalid order query is set", () => {
+        return request(app)
+          .get("/api/articles?order=not_an_order")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid order query");
+          });
+      });
+      it("Status 404, when an invalid topic filter is input", () => {
+        return request(app)
+          .get("/api/articles?topic=not_a_topic")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+    });
+  });
 });
