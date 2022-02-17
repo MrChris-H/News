@@ -1,5 +1,5 @@
 exports.customErr = (err, req, res, next) => {
-  if (err.status === 404 && err.msg === "resource not found") {
-    res.status(404).send({ msg: "resource not found" });
+  if (err.status && err.msg) {
+    res.status(err.status).send({ msg: err.msg });
   } else next(err);
 };
