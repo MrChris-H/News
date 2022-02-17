@@ -466,7 +466,114 @@ describe("The Server", () => {
           .get(`/api`)
           .expect(200)
           .then(({ body: { api } }) => {
-            expect(Object.keys(api)).toHaveLength(9);
+            expect(api).toEqual(
+              expect.objectContaining({
+                "GET /api": {
+                  description:
+                    "serves up a json representation of all the available endpoints of the api",
+                },
+                "GET /api/topics": {
+                  description: "serves an array of all topics",
+                  queries: [],
+                  exampleResponse: {
+                    topics: [{ slug: "football", description: "Footie!" }],
+                  },
+                },
+                "GET /api/articles": {
+                  description: "serves an array of all articles",
+                  queries: ["topic", "sort_by", "order"],
+                  exampleResponse: {
+                    articles: [
+                      {
+                        title: "Seafood substitutions are increasing",
+                        topic: "cooking",
+                        author: "weegembump",
+                        created_at: 1527695953341,
+                        votes: 2,
+                      },
+                    ],
+                  },
+                },
+                "GET /api/articles/:article_id": {
+                  description: "serves and object containing an article",
+                  queries: [],
+                  exampleResponse: {
+                    article: {
+                      title: "Seafood substitutions are increasing",
+                      topic: "cooking",
+                      author: "weegembump",
+                      body: "Text from the article..",
+                      created_at: 1527695953341,
+                      votes: 2,
+                    },
+                  },
+                },
+                "PATCH /api/articles/:article_id": {
+                  description:
+                    "updates the votes property of an article and returns the article",
+                  queries: [],
+                  exampleRequest: {
+                    inc_votes: 1,
+                  },
+                  exampleResponse: {
+                    article: {
+                      title: "Seafood substitutions are increasing",
+                      topic: "cooking",
+                      author: "weegembump",
+                      body: "Text from the article..",
+                      created_at: 1527695953341,
+                      votes: 3,
+                    },
+                  },
+                },
+                "GET /api/users": {
+                  description: "serves an array of all users",
+                  queries: [],
+                  exampleResponse: {
+                    users: [{ username: "icellusedkars" }],
+                  },
+                },
+                "GET /api/articles/:article_id/comments": {
+                  description: "serves all comments relating to a article_id",
+                  queries: [],
+                  exampleResponse: {
+                    comments: [
+                      {
+                        body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                        votes: 16,
+                        author: "butter_bridge",
+                        article_id: 9,
+                        created_at: 1586179020000,
+                      },
+                    ],
+                  },
+                },
+                "POST /api/articles/:article_id/comments": {
+                  description:
+                    "inserts a new comment into the comments table then serves the comment as a response",
+                  queries: [],
+                  exampleRequest: {
+                    username: "butter_bridge",
+                    body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                  },
+                  exampleResponse: {
+                    comment: {
+                      body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                      votes: 16,
+                      author: "butter_bridge",
+                      article_id: 9,
+                      created_at: 1586179020000,
+                    },
+                  },
+                },
+                "DELETE /api/comments/:comments_id": {
+                  description:
+                    "removes a comment with a particular comment id from the comments table",
+                  queries: [],
+                  exampleResponse: "no content",
+                },
+              })
+            );
           });
       });
     });
