@@ -459,4 +459,16 @@ describe("The Server", () => {
       });
     });
   });
+  describe("/api", () => {
+    describe("GET", () => {
+      it("Status 200, returns with contents of endpoints.json", () => {
+        return request(app)
+          .get(`/api`)
+          .expect(200)
+          .then(({ body: { api } }) => {
+            expect(Object.keys(api)).toHaveLength(9);
+          });
+      });
+    });
+  });
 });
