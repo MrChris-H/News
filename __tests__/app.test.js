@@ -436,16 +436,14 @@ describe("The Server", () => {
       });
     });
   });
-  // describe("/api/comments/:comment_id", () => {
-  //   describe("DELETE", () => {
-  //     it('Status 204, deletes comment and responds with msg:"no content"', () => {
-  //       return response(app)
-  //         .delete(`/api/comments/2`)
-  //         .expect(204)
-  //         .then(({ body: { msg } }) => {
-  //           expect(msg).toBe("no content");
-  //         });
-  //     });
-  //   });
-  // });
+  describe("/api/comments/:comment_id", () => {
+    describe("DELETE", () => {
+      it("Status 204, deletes comment", () => {
+        return request(app)
+          .delete(`/api/comments/2`)
+          .expect(204)
+          .then(() => {});
+      });
+    });
+  });
 });
