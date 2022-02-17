@@ -266,6 +266,111 @@ describe("The Server", () => {
           });
       });
     });
+    describe("POST", () => {
+      it("Status 201, accepts object to input into comments table and returns comment", () => {
+        return request(app)
+          .post("/api/articles/4/comments")
+          .send({
+            username: "icellusedkars",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(201)
+          .then(({ body: { comment } }) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                article_id: 4,
+                comment_id: 19,
+                votes: 0,
+                created_at: expect.any(String),
+                author: "icellusedkars",
+                body: "this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it",
+              })
+            );
+          });
+      });
+      it("Status 404, when requesting to comment on an article that does not currently exist", () => {
+        return request(app)
+          .post("/api/articles/99999999/comments")
+          .send({
+            username: "icellusedkars",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 400, when article id is a bad input", () => {
+        return request(app)
+          .post("/api/articles/not_an_id/comments")
+          .send({
+            username: "icellusedkars",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, no username in body", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, username is null", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: null,
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, no body in body", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "icellusedkars",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, body is null", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "icellusedkars",
+            body: null,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("status 400, not a username", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "not_a_username",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+    });
   });
   describe("/api/articles/ (comment count)", () => {
     describe("GET", () => {

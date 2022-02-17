@@ -1,6 +1,9 @@
 const res = require("express/lib/response");
 const { checkExists } = require("../models/global-models");
-const { fetchCommentsByArticleId } = require("../models/models-controllers");
+const {
+  fetchCommentsByArticleId,
+  insertCommentByArticleId,
+} = require("../models/comments-models");
 
 exports.getCommentsByArticleId = (req, res, next) => {
   const { article_id } = req.params;
@@ -11,6 +14,18 @@ exports.getCommentsByArticleId = (req, res, next) => {
   Promise.all(proms)
     .then(([comments]) => {
       res.status(200).send({ comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.postCommentByArticleId = (req, res, next) => {
+  const { article_id } = req.params;
+  const { username, body } = req.body;
+  insertCommentByArticleId(username, body, article_id)
+    .then((comment) => {
+      res.status(201).send({ comment });
     })
     .catch((err) => {
       next(err);

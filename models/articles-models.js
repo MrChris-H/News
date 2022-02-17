@@ -41,7 +41,6 @@ exports.fetchArticles = () => {
   ORDER BY created_at DESC
   ;`;
   return db.query(queryStr).then(({ rows }) => {
-    console.log(rows);
     return rows;
   });
 };
