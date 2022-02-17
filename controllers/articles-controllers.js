@@ -39,10 +39,15 @@ exports.patchArticle = (req, res, next) => {
 exports.getArticles = (req, res, next) => {
   const { sort_by, order, topic } = req.query;
   const proms = [fetchArticles(sort_by, order, topic)];
-  if (topic !== undefined) proms.unshift(checkExists("topics", "slug", topic));
+  if (topic !== undefined) proms.push(checkExists("topics", "slug", topic));
   Promise.all(proms)
-    .then((response) => {
-      const articles = response[response.length - 1];
+    .then(([articles]) => {
+      if (articles.length === 0 && topic !== undefined) {
+        return Promise.reject({
+          status: 404,
+          msg: "no articles found for this topic",
+        });
+      }
       res.status(200).send({ articles });
     })
     .catch((err) => {
