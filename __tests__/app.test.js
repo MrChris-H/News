@@ -323,11 +323,35 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
+      it("Status 400, username is null", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: null,
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
       it("Status 400, no body in body", () => {
         return request(app)
           .post("/api/articles/2/comments")
           .send({
             username: "icellusedkars",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, body is null", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "icellusedkars",
+            body: null,
           })
           .expect(400)
           .then(({ body: { msg } }) => {
