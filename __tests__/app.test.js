@@ -323,6 +323,18 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
+      it("Status 400, username is null", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: null,
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
       it("Status 400, no body in body", () => {
         return request(app)
           .post("/api/articles/2/comments")
@@ -332,6 +344,30 @@ describe("The Server", () => {
           .expect(400)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, body is null", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "icellusedkars",
+            body: null,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("status 400, not a username", () => {
+        return request(app)
+          .post("/api/articles/2/comments")
+          .send({
+            username: "not_a_username",
+            body: `this might be the greatest masterpiece I have ever read. I mean sheep, who would have guessed it`,
+          })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
           });
       });
     });
@@ -418,7 +454,7 @@ describe("The Server", () => {
             expect(msg).toBe("invalid order query");
           });
       });
-      it("Status 404, when an invalid topic filter is input", () => {
+      it("Status 404, when a topic filter is input that doesn't match current topics", () => {
         return request(app)
           .get("/api/articles?topic=not_a_topic")
           .expect(404)
@@ -460,6 +496,7 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
+
     });
   });
 });
