@@ -444,6 +444,22 @@ describe("The Server", () => {
           .expect(204)
           .then(() => {});
       });
+      it("Status 404, comment not found", () => {
+        return request(app)
+          .delete(`/api/comments/9999`)
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 400, invalid comment id is passed", () => {
+        return request(app)
+          .delete(`/api/comments/not_an_id`)
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
 });
