@@ -10,7 +10,7 @@
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all topics",
+    "description": "serves an array of all articles",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
@@ -23,5 +23,45 @@
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves and object containing an article",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "updates the votes property of an article and returns the article",
+    "queries": [],
+    "exampleResponse": {
+      "article": {}
+    }
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "users": [{}]
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves all comments relating to a article_id",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [{}]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "inserts a new comment into the comments table then serves the comment as a response",
+    "queries": [],
+    "exampleResponse": {
+      "comment": [{}]
+    }
+  },
+  "DELETE /api/comments/:comments_id": {
+    "description": "removes a comment with a particular comment id from the comments table",
+    "queries": [],
+    "exampleResponse": "no content"
   }
 }
