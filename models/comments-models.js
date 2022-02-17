@@ -24,3 +24,14 @@ exports.insertCommentByArticleId = (username, body, article_id) => {
     return rows[0];
   });
 };
+
+exports.removeCommentByCommentId = (comment_id) => {
+  const insertStr = `
+  DELETE FROM comments
+  WHERE comment_id = $1
+  RETURNING*;
+  `;
+  return db.query(insertStr, [comment_id]).then(({ rows }) => {
+    return rows;
+  });
+};

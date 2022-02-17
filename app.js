@@ -7,6 +7,7 @@ const {
 const {
   getCommentsByArticleId,
   postCommentByArticleId,
+  deleteCommentByCommentId,
 } = require("./controllers/comments-controllers");
 const { customErr } = require("./controllers/errors/custom-error-controllers");
 const {
@@ -27,6 +28,7 @@ app.get(`/api/users`, getUsers);
 app.get(`/api/articles`, getArticles);
 app.get(`/api/articles/:article_id/comments`, getCommentsByArticleId);
 app.post(`/api/articles/:article_id/comments`, postCommentByArticleId);
+app.delete(`/api/comments/:comment_id`, deleteCommentByCommentId);
 //--------------------------------------------------------------------------
 app.all("/*", badPath);
 //--------------------------------------------------------------------------

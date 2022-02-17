@@ -3,6 +3,7 @@ const { checkExists } = require("../models/global-models");
 const {
   fetchCommentsByArticleId,
   insertCommentByArticleId,
+  removeCommentByCommentId,
 } = require("../models/comments-models");
 
 exports.getCommentsByArticleId = (req, res, next) => {
@@ -26,6 +27,22 @@ exports.postCommentByArticleId = (req, res, next) => {
   insertCommentByArticleId(username, body, article_id)
     .then((comment) => {
       res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.deleteCommentByCommentId = (req, res, next) => {
+  const { comment_id } = req.params;
+  const proms = [
+    removeCommentByCommentId(comment_id),
+    checkExists("comments", "comment_id", comment_id),
+  ];
+  Promise.all(proms)
+    .then((comment) => {
+      console.log(comment);
+      res.status(204).send();
     })
     .catch((err) => {
       next(err);
