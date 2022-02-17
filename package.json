@@ -11,7 +11,8 @@
     "test-app": "jest app",
     "test": "jest",
     "prepare": "husky install",
-    "query": "psql -f ./query.sql > .query.txt"
+    "query": "psql -f ./query.sql > .query.txt",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
