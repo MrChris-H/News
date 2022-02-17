@@ -426,6 +426,26 @@ describe("The Server", () => {
             expect(msg).toBe("resource not found");
           });
       });
+      // it("Status 404, when a topic is valid but there are no articles for that topic", () => {
+      //   return request(app)
+      //     .get("/api/articles?topic=paper")
+      //     .expect(404)
+      //     .then(({ body: { msg } }) => {
+      //       expect(msg).toBe("no articles found for this topic");
+      //     });
+      // });
     });
   });
+  // describe("/api/comments/:comment_id", () => {
+  //   describe("DELETE", () => {
+  //     it('Status 204, deletes comment and responds with msg:"no content"', () => {
+  //       return response(app)
+  //         .delete(`/api/comments/2`)
+  //         .expect(204)
+  //         .then(({ body: { msg } }) => {
+  //           expect(msg).toBe("no content");
+  //         });
+  //     });
+  //   });
+  // });
 });
