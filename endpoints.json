@@ -42,14 +42,21 @@
     "description": "updates the votes property of an article and returns the article",
     "queries": [],
     "exampleResponse": {
-      "article": {}
+      "article": {
+        "title": "Seafood substitutions are increasing",
+        "topic": "cooking",
+        "author": "weegembump",
+        "body": "Text from the article..",
+        "created_at": 1527695953341,
+        "votes": 2
+      }
     }
   },
   "GET /api/users": {
     "description": "serves an array of all users",
     "queries": [],
     "exampleResponse": {
-      "users": [{}]
+      "users": [{ "username": "icellusedkars" }]
     }
   },
   "GET /api/articles/:article_id/comments": {
