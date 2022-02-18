@@ -11,24 +11,24 @@ jobs:
     steps:
       - name: Say hello
         run: echo 'Hello'
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout and clone repo
-  #       uses: actions/checkout@v2
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout and clone repo
+        uses: actions/checkout@v2
 
-  #     - name: Install Dependencies
-  #       run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-  #     - name: Setup PSQL
-  #       uses: harmon758/postgresql-action@v1
-  #       with:
-  #         postgresql db: test_db
-  #         postgresql user: mr_testerson
-  #         postgresql password: pa55word
+      - name: Setup PSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: test_db
+          postgresql user: mr_testerson
+          postgresql password: pa55word
 
-  #     - name: Test Utils and App
-  #       run: PGDATABASE=test_db PGUSER=mr_testerson PGPASSWORD=pa55word npm test
+      - name: Test Utils and App
+        run: PGDATABASE=test_db PGUSER=mr_testerson PGPASSWORD=pa55word npm test
   # deploy:
   #   runs-on: ubuntu-latest
   #   needs: test
