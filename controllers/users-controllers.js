@@ -1,3 +1,4 @@
+const { checkExists } = require("../models/global-models");
 const { fetchUsers, fetchUser } = require("../models/users-models");
 
 exports.getUsers = (req, res, next) => {
@@ -12,8 +13,12 @@ exports.getUsers = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
   const { username } = req.params;
-  fetchUser(username)
-    .then((user) => {
+  const proms = [
+    fetchUser(username),
+    checkExists("users", "username", username),
+  ];
+  Promise.all(proms)
+    .then(([user]) => {
       res.status(200).send({ user });
     })
     .catch((err) => {

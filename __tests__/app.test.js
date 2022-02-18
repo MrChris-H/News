@@ -631,6 +631,14 @@ describe("The Server", () => {
             );
           });
       });
+      it("Status 404, when a username that is valid but does not exist is input", () => {
+        return request(app)
+          .get("/api/users/not_a_username")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
     });
   });
 });
