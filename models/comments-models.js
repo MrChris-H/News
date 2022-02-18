@@ -33,3 +33,16 @@ exports.removeCommentByCommentId = (comment_id) => {
   `;
   return db.query(insertStr, [comment_id]).then(() => {});
 };
+
+exports.updateCommentByCommentId = (votes, comment_id) => {
+  const queryValues = [votes, comment_id];
+  const insertStr = `
+  UPDATE comments  
+  SET votes = votes + $1 
+  WHERE comment_id = $2 
+  RETURNING*;
+  `;
+  return db.query(insertStr, queryValues).then(({ rows }) => {
+    return rows[0];
+  });
+};
