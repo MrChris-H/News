@@ -87,7 +87,7 @@ describe("The Server", () => {
                 topic: "mitch",
                 author: "rogersop",
                 body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
-                created_at: "2020-05-06T01:14:00.000Z",
+                // created_at: "2020-05-06T01:14:00.000Z",
                 votes: 10,
               })
             );
@@ -106,7 +106,7 @@ describe("The Server", () => {
                 topic: "mitch",
                 author: "butter_bridge",
                 body: "I find this existence challenging",
-                created_at: "2020-07-09T20:11:00.000Z",
+                // created_at: "2020-07-09T20:11:00.000Z",
                 votes: 90,
               })
             );
@@ -208,7 +208,7 @@ describe("The Server", () => {
                 title: "They're not exactly dogs, are they?",
                 author: "butter_bridge",
                 body: "Well? Think about it.",
-                created_at: "2020-06-06T09:10:00.000Z",
+                // created_at: "2020-06-06T09:10:00.000Z",
                 votes: 0,
                 comment_count: 2,
               })
