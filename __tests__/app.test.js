@@ -533,7 +533,7 @@ describe("The Server", () => {
       });
       it("Status 404, valid id type but the comment does not exist", () => {
         return request(app)
-          .patch("/api/articles/99999")
+          .patch("/api/comments/99999")
           .send({ inc_votes: 10 })
           .expect(404)
           .then((res) => {
@@ -542,7 +542,7 @@ describe("The Server", () => {
       });
       it("Status 400, invalid id type is passed", () => {
         return request(app)
-          .patch("/api/articles/not_an_id")
+          .patch("/api/comments/not_an_id")
           .send({ inc_votes: 10 })
           .expect(400)
           .then((res) => {
@@ -551,7 +551,7 @@ describe("The Server", () => {
       });
       it("Status 400, no inc_votes on request body", () => {
         return request(app)
-          .patch("/api/articles/2")
+          .patch("/api/comments/2")
           .send({ not_correct: 10 })
           .expect(400)
           .then((res) => {
@@ -560,7 +560,7 @@ describe("The Server", () => {
       });
       it("Status 400, invalid inc_votes", () => {
         return request(app)
-          .patch("/api/articles/2")
+          .patch("/api/comments/2")
           .send({ inc_votes: "not_number" })
           .expect(400)
           .then((res) => {
