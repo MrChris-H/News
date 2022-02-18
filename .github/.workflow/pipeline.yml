@@ -2,7 +2,7 @@ name: Test and Deploy
 
 on:
   push:
-    branches: -main
+    branches: -ncnews-actions
 
 jobs:
   greeting:
