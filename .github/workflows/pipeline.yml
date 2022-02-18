@@ -1,8 +1,8 @@
-name: Test and Deplo
+name: Test & Deploy
 
 on:
   push:
-    branches: -ncnews-actions
+    branches: - ncnews-actions
 
 jobs:
   greeting:
