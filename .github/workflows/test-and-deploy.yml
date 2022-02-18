@@ -2,7 +2,7 @@ name: Test & Deploy
 
 on:
   push:
-    branches: 
+    branches:
       - ncnews-actions
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup PSQL
         uses: harmon758/postgresql-action@v1
         with:
-          postgresql db: test_db
+          postgresql db: nc_news_test
           postgresql user: mr_testerson
           postgresql password: pa55word
 
