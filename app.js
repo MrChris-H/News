@@ -24,20 +24,10 @@ const app = express();
 app.use(express.json());
 app.use("/api", apiRouter);
 
-// app.get(`/api`, endPoints);
-// app.get(`/api/topics`, getTopics);
-// app.get(`/api/articles/:article_id`, getArticle);
-// app.patch(`/api/articles/:article_id`, patchArticle);
-// app.get(`/api/users`, getUsers);
-// app.get(`/api/articles`, getArticles);
-// app.get(`/api/articles/:article_id/comments`, getCommentsByArticleId);
-// app.post(`/api/articles/:article_id/comments`, postCommentByArticleId);
-app.delete(`/api/comments/:comment_id`, deleteCommentByCommentId);
 //--------------------------------------------------------------------------
-app.all("/*", badPath);
+app.all("/*", badPath); // 404 path not found
 //--------------------------------------------------------------------------
-app.use(sqlErr);
-app.use(customErr);
-
-app.use(serverErr);
+app.use(sqlErr);  // sql related errors
+app.use(customErr); // custom errors
+app.use(serverErr); // 500 internal server error
 module.exports = app;
