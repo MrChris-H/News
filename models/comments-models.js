@@ -33,3 +33,4 @@ exports.removeCommentByCommentId = (comment_id) => {
   `;
   return db.query(insertStr, [comment_id]).then(() => {});
 };
+
