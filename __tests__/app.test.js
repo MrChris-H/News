@@ -494,6 +494,80 @@ describe("The Server", () => {
           });
       });
     });
+    describe("PATCH", () => {
+      it("Status 201, and returns body with comment object with added votes", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: 1 })
+          .expect(201)
+          .then(({ body: { comment } }) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: 1,
+                body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                author: "butter_bridge",
+                article_id: 9,
+                created_at: expect.any(String),
+                votes: 17,
+              })
+            );
+          });
+      });
+      it("Status 201, and returns body with comment object with added votes", () => {
+        return request(app)
+          .patch("/api/comments/1")
+          .send({ inc_votes: -1 })
+          .expect(201)
+          .then(({ body: { comment } }) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: 1,
+                body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+                author: "butter_bridge",
+                article_id: 9,
+                created_at: expect.any(String),
+                votes: 15,
+              })
+            );
+          });
+      });
+      it("Status 404, valid id type but the comment does not exist", () => {
+        return request(app)
+          .patch("/api/comments/99999")
+          .send({ inc_votes: 10 })
+          .expect(404)
+          .then((res) => {
+            expect(res.body.msg).toBe("resource not found");
+          });
+      });
+      it("Status 400, invalid id type is passed", () => {
+        return request(app)
+          .patch("/api/comments/not_an_id")
+          .send({ inc_votes: 10 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("bad request");
+          });
+      });
+      it("Status 400, no inc_votes on request body", () => {
+        return request(app)
+          .patch("/api/comments/2")
+          .send({ not_correct: 10 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("bad request");
+          });
+      });
+      it("Status 400, invalid inc_votes", () => {
+        return request(app)
+          .patch("/api/comments/2")
+          .send({ inc_votes: "not_number" })
+          .expect(400)
+          .then((res) => {
+            expect(res.body.msg).toBe("bad request");
+          });
+      });
+    });
   });
   describe("/api", () => {
     describe("GET", () => {

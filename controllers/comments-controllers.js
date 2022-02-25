@@ -4,6 +4,7 @@ const {
   fetchCommentsByArticleId,
   insertCommentByArticleId,
   removeCommentByCommentId,
+  updateCommentByCommentId,
 } = require("../models/comments-models");
 
 exports.getCommentsByArticleId = (req, res, next) => {
@@ -48,4 +49,20 @@ exports.deleteCommentByCommentId = (req, res, next) => {
     });
 };
 
+
+exports.patchCommentByCommentId = (req, res, next) => {
+  const { comment_id } = req.params;
+  const { inc_votes } = req.body;
+  const proms = [
+    updateCommentByCommentId(inc_votes, comment_id),
+    checkExists("comments", "comment_id", comment_id),
+  ];
+  Promise.all(proms)
+    .then(([comment]) => {
+      res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
