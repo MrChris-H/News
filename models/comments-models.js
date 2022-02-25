@@ -46,3 +46,4 @@ exports.updateCommentByCommentId = (votes, comment_id) => {
     return rows[0];
   });
 };
+

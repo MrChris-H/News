@@ -49,6 +49,7 @@ exports.deleteCommentByCommentId = (req, res, next) => {
     });
 };
 
+
 exports.patchCommentByCommentId = (req, res, next) => {
   const { comment_id } = req.params;
   const { inc_votes } = req.body;
@@ -64,3 +65,4 @@ exports.patchCommentByCommentId = (req, res, next) => {
       next(err);
     });
 };
+
