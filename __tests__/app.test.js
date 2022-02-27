@@ -35,6 +35,22 @@ describe("The Server", () => {
           });
       });
     });
+    describe(".POST", () => {
+      it("Status 201, adds topic to topics table", () => {
+        return request(app)
+          .post("/api/topics")
+          .send({ slug: "Sheep", description: "woolly things" })
+          .expect(201)
+          .then(({ body: { topic } }) => {
+            expect(topic).toEqual(
+              expect.objectContaining({
+                slug: "Sheep",
+                description: "woolly things",
+              })
+            );
+          });
+      });
+    });
   });
   describe("/api/articles/article_id", () => {
     describe(".GET", () => {

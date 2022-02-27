@@ -58,9 +58,8 @@ exports.getArticles = (req, res, next) => {
 
 exports.postArticle = (req, res, next) => {
   const { username, title, body, topic } = req.body;
-  const proms = [insertArticle(username, title, body, topic)];
-  Promise.all(proms)
-    .then(([article]) => {
+  insertArticle(username, title, body, topic)
+    .then((article) => {
       res.status(201).send({ article });
     })
 
