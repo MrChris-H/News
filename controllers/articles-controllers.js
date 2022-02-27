@@ -3,6 +3,7 @@ const {
   updateArticle,
   fetchArticles,
   insertArticle,
+  removeArticleByArticleId,
 } = require("../models/articles-models");
 const { checkExists } = require("../models/global-models");
 
@@ -63,6 +64,21 @@ exports.postArticle = (req, res, next) => {
       res.status(201).send({ article });
     })
 
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.deleteArticleByArticleId = (req, res, next) => {
+  const { article_id } = req.params;
+  const proms = [
+    removeArticleByArticleId(article_id),
+    checkExists("articles", "article_id", article_id),
+  ];
+  Promise.all(proms)
+    .then(() => {
+      res.status(204).send();
+    })
     .catch((err) => {
       next(err);
     });

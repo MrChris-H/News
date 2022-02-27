@@ -74,3 +74,12 @@ exports.insertArticle = (username, title, body, topic) => {
     return rows[0];
   });
 };
+
+exports.removeArticleByArticleId = (article_id) => {
+  const insertStr = `
+  DELETE FROM articles
+  WHERE article_id = $1
+  RETURNING*;
+  `;
+  return db.query(insertStr, [article_id]).then(() => {});
+};
