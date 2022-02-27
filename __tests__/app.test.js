@@ -59,6 +59,15 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
+      it("Status 400, missing slug", () => {
+        return request(app)
+          .post("/api/topics")
+          .send({ description: "woolly things" })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
   describe("/api/articles/article_id", () => {
