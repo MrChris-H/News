@@ -194,6 +194,34 @@ describe("The Server", () => {
           });
       });
     });
+    describe("GET", () => {
+      it("Status 201, adds an article to articles table", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: "Sheep",
+            body: `The sheep did it`,
+            topic: "cats",
+          })
+          .expect(201)
+          .then(({ body: { article } }) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: 13,
+                author: "icellusedkars",
+                title: "Sheep",
+                body: `The sheep did it`,
+                topic: "cats",
+                votes: 0,
+                created_at: expect.any(String),
+                // comment_count: 0,
+              })
+            );
+          });
+      });
+      
+    });
   });
   describe("/api/articles/:article:id (comment count)", () => {
     describe("GET", () => {
