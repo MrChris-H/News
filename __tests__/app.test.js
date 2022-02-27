@@ -194,7 +194,7 @@ describe("The Server", () => {
           });
       });
     });
-    describe("GET", () => {
+    describe("POST", () => {
       it("Status 201, adds an article to articles table", () => {
         return request(app)
           .post("/api/articles")
@@ -220,7 +220,90 @@ describe("The Server", () => {
             );
           });
       });
-      
+      it("Status 404, username valid but does not exist", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "not_a_name",
+            title: "Sheep",
+            body: `The sheep did it`,
+            topic: "cats",
+          })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 404, title valid but does not exist", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: "Sheep",
+            body: `The sheep did it`,
+            topic: "not_a_topic",
+          })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 404, body invalid", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: "Sheep",
+            body: null,
+            topic: "cats",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, title invalid", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: null,
+            body: `The sheep did it`,
+            topic: "cats",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, username valid but does not exist", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: null,
+            title: "Sheep",
+            body: `The sheep did it`,
+            topic: "cats",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, title valid but does not exist", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: "Sheep",
+            body: `The sheep did it`,
+            topic: null,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
   describe("/api/articles/:article:id (comment count)", () => {
