@@ -2,6 +2,7 @@ const {
   fetchArticle,
   updateArticle,
   fetchArticles,
+  insertArticle,
 } = require("../models/articles-models");
 const { checkExists } = require("../models/global-models");
 
@@ -50,6 +51,19 @@ exports.getArticles = (req, res, next) => {
       }
       res.status(200).send({ articles });
     })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.postArticle = (req, res, next) => {
+  const { username, title, body, topic } = req.body;
+  const proms = [insertArticle(username, title, body, topic)];
+  Promise.all(proms)
+    .then(([article]) => {
+      res.status(201).send({ article });
+    })
+
     .catch((err) => {
       next(err);
     });

@@ -60,3 +60,17 @@ exports.fetchArticles = (sort_by = "created_at", order = "DESC", topic) => {
     return rows;
   });
 };
+
+exports.insertArticle = (username, title, body, topic) => {
+  const insertStr = `
+  INSERT INTO articles
+    (author, title, body, topic)
+  VALUES 
+    ($1, $2, $3, $4)
+    RETURNING*
+  ;`;
+  const queryArr = [username, title, body, topic];
+  return db.query(insertStr, queryArr).then(({ rows }) => {
+    return rows[0];
+  });
+};
