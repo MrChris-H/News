@@ -190,6 +190,22 @@ describe("The Server", () => {
           .expect(204)
           .then(() => {});
       });
+      it("Status 404, articles not found", () => {
+        return request(app)
+          .delete(`/api/articles/9999`)
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+      it("Status 400, invalid article id is passed", () => {
+        return request(app)
+          .delete(`/api/articles/not_an_id`)
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
   describe("/api/users", () => {
