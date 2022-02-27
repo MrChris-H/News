@@ -50,6 +50,15 @@ describe("The Server", () => {
             );
           });
       });
+      it("Status 400, invalid slug", () => {
+        return request(app)
+          .post("/api/topics")
+          .send({ slug: null, description: "woolly things" })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
     });
   });
   describe("/api/articles/article_id", () => {
