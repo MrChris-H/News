@@ -70,7 +70,7 @@ describe("The Server", () => {
       });
     });
   });
-  describe("/api/articles/article_id", () => {
+  describe("/api/articles/:article_id", () => {
     describe(".GET", () => {
       it("Status 200, returns body with specific article object", () => {
         return request(app)
@@ -181,6 +181,14 @@ describe("The Server", () => {
           .then((res) => {
             expect(res.body.msg).toBe("bad request");
           });
+      });
+    });
+    describe(".DELETE", () => {
+      it("Status 204, removes article from articles table", () => {
+        return request(app)
+          .delete("/api/articles/2")
+          .expect(204)
+          .then(() => {});
       });
     });
   });
