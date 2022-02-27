@@ -234,7 +234,7 @@ describe("The Server", () => {
             expect(msg).toBe("resource not found");
           });
       });
-      it("Status 404, title valid but does not exist", () => {
+      it("Status 404, topic valid but does not exist", () => {
         return request(app)
           .post("/api/articles")
           .send({
@@ -276,7 +276,7 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
-      it("Status 400, username valid but does not exist", () => {
+      it("Status 400, author invalid", () => {
         return request(app)
           .post("/api/articles")
           .send({
@@ -290,7 +290,7 @@ describe("The Server", () => {
             expect(msg).toBe("bad request");
           });
       });
-      it("Status 400, title valid but does not exist", () => {
+      it("Status 400, topic invalid", () => {
         return request(app)
           .post("/api/articles")
           .send({
@@ -298,6 +298,58 @@ describe("The Server", () => {
             title: "Sheep",
             body: `The sheep did it`,
             topic: null,
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, author missing from send", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            title: "Sheep",
+            body: `The sheep did it`,
+            topic: "cats",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, title missing from send", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            body: `The sheep did it`,
+            topic: "cats",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, body missing from send", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: "Sheep",
+            topic: "cats",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("bad request");
+          });
+      });
+      it("Status 400, topic missing from send", () => {
+        return request(app)
+          .post("/api/articles")
+          .send({
+            username: "icellusedkars",
+            title: "Sheep",
+            body: `The sheep did it`,
           })
           .expect(400)
           .then(({ body: { msg } }) => {
