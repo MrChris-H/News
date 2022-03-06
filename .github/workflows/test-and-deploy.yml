@@ -6,11 +6,6 @@ on:
       - main
 
 jobs:
-  greeting:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say hello
-        run: echo 'Hello'
   test:
     runs-on: ubuntu-latest
     steps:
