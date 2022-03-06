@@ -71,11 +71,7 @@ exports.postArticle = (req, res, next) => {
 
 exports.deleteArticleByArticleId = (req, res, next) => {
   const { article_id } = req.params;
-  const proms = [
-    removeArticleByArticleId(article_id),
-    checkExists("articles", "article_id", article_id),
-  ];
-  Promise.all(proms)
+  removeArticleByArticleId(article_id)
     .then(() => {
       res.status(204).send();
     })

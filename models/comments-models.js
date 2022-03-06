@@ -40,7 +40,11 @@ exports.removeCommentByCommentId = (comment_id) => {
   WHERE comment_id = $1
   RETURNING*;
   `;
-  return db.query(insertStr, [comment_id]).then(() => {});
+  return db.query(insertStr, [comment_id]).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "resource not found" });
+    }
+  });
 };
 
 exports.updateCommentByCommentId = (votes, comment_id) => {

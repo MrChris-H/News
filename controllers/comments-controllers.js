@@ -37,11 +37,7 @@ exports.postCommentByArticleId = (req, res, next) => {
 
 exports.deleteCommentByCommentId = (req, res, next) => {
   const { comment_id } = req.params;
-  const proms = [
-    removeCommentByCommentId(comment_id),
-    checkExists("comments", "comment_id", comment_id),
-  ];
-  Promise.all(proms)
+  removeCommentByCommentId(comment_id)
     .then(() => {
       res.status(204).send();
     })

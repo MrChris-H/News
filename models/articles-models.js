@@ -97,6 +97,8 @@ exports.removeArticleByArticleId = (article_id) => {
   RETURNING*;
   `;
   return db.query(insertStr, [article_id]).then(({ rows }) => {
-    console.log(rows);
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "resource not found" });
+    }
   });
 };
