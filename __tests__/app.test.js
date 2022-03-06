@@ -233,7 +233,7 @@ describe("The Server", () => {
           .get("/api/articles")
           .expect(200)
           .then((res) => {
-            expect(res.body.articles).toHaveLength(12);
+            expect(res.body.articles).toHaveLength(10);
             res.body.articles.forEach((article) => {
               expect(article).toEqual(
                 expect.objectContaining({
@@ -273,7 +273,7 @@ describe("The Server", () => {
                 topic: "cats",
                 votes: 0,
                 created_at: expect.any(String),
-                // comment_count: 0,
+                comment_count: 0,
               })
             );
           });
@@ -599,7 +599,7 @@ describe("The Server", () => {
           .get("/api/articles")
           .expect(200)
           .then((res) => {
-            expect(res.body.articles).toHaveLength(12);
+            expect(res.body.articles).toHaveLength(10);
             res.body.articles.forEach((article) => {
               expect(article).toEqual(
                 expect.objectContaining({
@@ -905,6 +905,138 @@ describe("The Server", () => {
                 },
               })
             );
+          });
+      });
+    });
+  });
+  describe(" /api/articles (pagination)", () => {
+    describe("GET", () => {
+      it("Status 200, endpoint now limits the amount of articles returned to specified number", () => {
+        return request(app)
+          .get(`/api/articles?limit=2`)
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toHaveLength(2);
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  full_count: 12,
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, limit defaults to 10", () => {
+        return request(app)
+          .get(`/api/articles`)
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toHaveLength(10);
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  full_count: 12,
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, endpoint can now offset which page to start at", () => {
+        return request(app)
+          .get(`/api/articles?offset=1`)
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toHaveLength(2);
+            expect(articles[0]).toEqual(
+              expect.objectContaining({
+                article_id: 11,
+                title: "Am I a cat?",
+                topic: "mitch",
+                author: "icellusedkars",
+                created_at: expect.any(String),
+                votes: 0,
+                full_count: 12,
+                comment_count: 0,
+              })
+            );
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  full_count: 12,
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, offset defaults to 0", () => {
+        return request(app)
+          .get(`/api/articles?`)
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toHaveLength(10);
+            expect(articles[0]).toEqual(
+              expect.objectContaining({
+                article_id: 3,
+                title: "Eight pug gifs that remind me of mitch",
+                topic: "mitch",
+                author: "icellusedkars",
+                created_at: expect.any(String),
+                votes: 0,
+                full_count: 12,
+                comment_count: 2,
+              })
+            );
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  full_count: 12,
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+      it("Status 400, when an invalid limit query is set", () => {
+        return request(app)
+          .get("/api/articles?limit=not_a_number")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid limit query");
+          });
+      });
+      it("Status 400, when an invalid offset query is set", () => {
+        return request(app)
+          .get("/api/articles?offset=not_an_offset")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid offset query");
           });
       });
     });
