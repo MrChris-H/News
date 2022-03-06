@@ -31,7 +31,13 @@ exports.updateArticle = (votes, id) => {
   });
 };
 
-exports.fetchArticles = (sort_by = "created_at", order = "DESC", topic) => {
+exports.fetchArticles = (
+  sort_by = "created_at",
+  order = "DESC",
+  topic,
+  limit = 10,
+  p = 0
+) => {
   if (
     !["article_id", "title", "author", "body", "created_at", "votes"].includes(
       sort_by
@@ -45,7 +51,7 @@ exports.fetchArticles = (sort_by = "created_at", order = "DESC", topic) => {
 
   const queryValues = [];
   let queryStr = `
-  SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, CAST(COUNT(comment_id)AS INT) AS comment_count
+  SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, CAST(COUNT(*) OVER()AS INT) AS full_count , CAST(COUNT(comment_id)AS INT) AS comment_count
   FROM articles 
   LEFT JOIN comments
   ON comments.article_id = articles.article_id`;
@@ -55,7 +61,8 @@ exports.fetchArticles = (sort_by = "created_at", order = "DESC", topic) => {
   }
   queryStr += ` GROUP BY articles.article_id
   ORDER BY ${sort_by} ${order}
-  ;`;
+  LIMIT  ${limit}
+  OFFSET 0;`;
   return db.query(queryStr, queryValues).then(({ rows }) => {
     return rows;
   });
@@ -71,6 +78,8 @@ exports.insertArticle = (username, title, body, topic) => {
   ;`;
   const queryArr = [username, title, body, topic];
   return db.query(insertStr, queryArr).then(({ rows }) => {
+    // rows[0].comment_count = 0;
+
     return rows[0];
   });
 };

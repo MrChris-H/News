@@ -233,7 +233,7 @@ describe("The Server", () => {
           .get("/api/articles")
           .expect(200)
           .then((res) => {
-            expect(res.body.articles).toHaveLength(12);
+            expect(res.body.articles).toHaveLength(10);
             res.body.articles.forEach((article) => {
               expect(article).toEqual(
                 expect.objectContaining({
@@ -599,7 +599,7 @@ describe("The Server", () => {
           .get("/api/articles")
           .expect(200)
           .then((res) => {
-            expect(res.body.articles).toHaveLength(12);
+            expect(res.body.articles).toHaveLength(10);
             res.body.articles.forEach((article) => {
               expect(article).toEqual(
                 expect.objectContaining({
@@ -908,5 +908,36 @@ describe("The Server", () => {
           });
       });
     });
+  });
+  describe(" /api/articles (pagination)", () => {
+    describe("GET", () => {
+      it("Status 200, endpoint now limits the amount of articles returned to specified number", () => {
+        return request(app)
+          .get(`/api/articles?limit=2`)
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            console.log(articles);
+            expect(articles).toHaveLength(2);
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                  full_count: 12,
+                  comment_count: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+    });
+
+    // describe("Status 200, limit defaults to 10", () => {});
+    // describe("Status 200, endpoint can now offset which article to start at", () => {});
+    // describe("Status 200, offset defaults to 0", () => {});
   });
 });
