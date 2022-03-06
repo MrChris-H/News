@@ -44,5 +44,5 @@ const dropTables = async () => {
   await db.query(`DROP TABLE IF EXISTS users;`);
   await db.query(`DROP TABLE IF EXISTS topics;`);
 };
-
+//
 module.exports = { createTables, dropTables };
