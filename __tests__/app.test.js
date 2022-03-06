@@ -994,7 +994,6 @@ describe("The Server", () => {
           .get(`/api/articles?`)
           .expect(200)
           .then(({ body: { articles } }) => {
-            console.log(articles[0]);
             expect(articles).toHaveLength(10);
             expect(articles[0]).toEqual(
               expect.objectContaining({
@@ -1022,6 +1021,22 @@ describe("The Server", () => {
                 })
               );
             });
+          });
+      });
+      it("Status 400, when an invalid limit query is set", () => {
+        return request(app)
+          .get("/api/articles?limit=not_a_number")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid limit query");
+          });
+      });
+      it("Status 400, when an invalid offset query is set", () => {
+        return request(app)
+          .get("/api/articles?offset=not_an_offset")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid offset query");
           });
       });
     });

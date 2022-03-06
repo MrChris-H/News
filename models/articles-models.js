@@ -38,7 +38,6 @@ exports.fetchArticles = (
   limit = 10,
   offset = 0
 ) => {
-  const p = offset * limit;
   if (
     !["article_id", "title", "author", "body", "created_at", "votes"].includes(
       sort_by
@@ -49,7 +48,15 @@ exports.fetchArticles = (
   if (!["ASC", "DESC"].includes(order)) {
     return Promise.reject({ status: 400, msg: "invalid order query" });
   }
-
+  if (!/^\d+$/.test(limit)) {
+    console.log("hi");
+    return Promise.reject({ status: 400, msg: "invalid limit query" });
+  }
+  if (!/^\d+$/.test(offset)) {
+    console.log("hi");
+    return Promise.reject({ status: 400, msg: "invalid offset query" });
+  }
+  const p = offset * limit;
   const queryValues = [];
   let queryStr = `
   SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, CAST(COUNT(*) OVER()AS INT) AS full_count , CAST(COUNT(comment_id)AS INT) AS comment_count
