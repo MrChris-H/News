@@ -97,5 +97,6 @@ exports.removeArticleByArticleId = (article_id) => {
   RETURNING*;
   `;
   return db.query(insertStr, [article_id]).then(({ rows }) => {
+    console.log(rows);
   });
 };
