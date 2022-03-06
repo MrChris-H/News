@@ -186,7 +186,7 @@ describe("The Server", () => {
     describe(".DELETE", () => {
       it("Status 204, removes article from articles table", () => {
         return request(app)
-          .delete("/api/articles/2")
+          .delete("/api/articles/1")
           .expect(204)
           .then(() => {});
       });
@@ -1090,7 +1090,6 @@ describe("The Server", () => {
           .get(`/api/articles/1/comments?offset=1`)
           .expect(200)
           .then(({ body: { comments } }) => {
-            console.log(comments[0]);
             expect(comments).toHaveLength(1);
             expect(comments[0]).toEqual(
               expect.objectContaining({
