@@ -8,9 +8,10 @@ const {
 } = require("../models/comments-models");
 
 exports.getCommentsByArticleId = (req, res, next) => {
+  const { limit, offset } = req.query;
   const { article_id } = req.params;
   const proms = [
-    fetchCommentsByArticleId(article_id),
+    fetchCommentsByArticleId(article_id, limit, offset),
     checkExists("articles", "article_id", article_id),
   ];
   Promise.all(proms)
@@ -49,7 +50,6 @@ exports.deleteCommentByCommentId = (req, res, next) => {
     });
 };
 
-
 exports.patchCommentByCommentId = (req, res, next) => {
   const { comment_id } = req.params;
   const { inc_votes } = req.body;
@@ -65,4 +65,3 @@ exports.patchCommentByCommentId = (req, res, next) => {
       next(err);
     });
 };
-

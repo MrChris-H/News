@@ -445,7 +445,7 @@ describe("The Server", () => {
           .get("/api/articles/1/comments")
           .expect(200)
           .then(({ body: { comments } }) => {
-            expect(comments).toHaveLength(11);
+            expect(comments).toHaveLength(10);
             comments.forEach((comment) => {
               expect(comment).toEqual(
                 expect.objectContaining({
@@ -1034,6 +1034,133 @@ describe("The Server", () => {
       it("Status 400, when an invalid offset query is set", () => {
         return request(app)
           .get("/api/articles?offset=not_an_offset")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid offset query");
+          });
+      });
+    });
+  });
+  describe("/api/articles/:article_id/comments (pagination)", () => {
+    describe("GET", () => {
+      it("Status 200, endpoint now limits the amount of comments returned to specified number", () => {
+        return request(app)
+          .get(`/api/articles/1/comments?limit=5`)
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(5);
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  article_id: 1,
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  full_count: 11,
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, limit defaults to 10", () => {
+        return request(app)
+          .get(`/api/articles/1/comments`)
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(10);
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  article_id: 1,
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  full_count: 11,
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, endpoint can now offset which page to start at", () => {
+        return request(app)
+          .get(`/api/articles/1/comments?offset=1`)
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            console.log(comments[0]);
+            expect(comments).toHaveLength(1);
+            expect(comments[0]).toEqual(
+              expect.objectContaining({
+                article_id: 1,
+                comment_id: 18,
+                votes: 16,
+                created_at: expect.any(String),
+                author: "butter_bridge",
+                body: "This morning, I showered for nine minutes.",
+                full_count: 11,
+              })
+            );
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  article_id: 1,
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  full_count: 11,
+                })
+              );
+            });
+          });
+      });
+      it("Status 200, offset defaults to 0", () => {
+        return request(app)
+          .get(`/api/articles/1/comments`)
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(10);
+            expect(comments[0]).toEqual(
+              expect.objectContaining({
+                article_id: 1,
+                comment_id: 2,
+                votes: 14,
+                created_at: expect.any(String),
+                author: "butter_bridge",
+                body: "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
+                full_count: 11,
+              })
+            );
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  article_id: 1,
+                  comment_id: expect.any(Number),
+                  votes: expect.any(Number),
+                  created_at: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  full_count: 11,
+                })
+              );
+            });
+          });
+      });
+      it("Status 400, when an invalid limit query is set", () => {
+        return request(app)
+          .get("/api/articles/1/comments?limit=not_a_number")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("invalid limit query");
+          });
+      });
+      it("Status 400, when an invalid offset query is set", () => {
+        return request(app)
+          .get("/api/articles/1/comments?offset=not_an_offset")
           .expect(400)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("invalid offset query");
