@@ -91,10 +91,13 @@ exports.insertArticle = (username, title, body, topic) => {
 };
 
 exports.removeArticleByArticleId = (article_id) => {
+  console.log(article_id);
   const insertStr = `
   DELETE FROM articles
   WHERE article_id = $1
   RETURNING*;
   `;
-  return db.query(insertStr, [article_id]).then(() => {});
+  return db.query(insertStr, [article_id]).then(({ rows }) => {
+    console.log(rows);
+  });
 };
