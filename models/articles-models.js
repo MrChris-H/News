@@ -49,11 +49,9 @@ exports.fetchArticles = (
     return Promise.reject({ status: 400, msg: "invalid order query" });
   }
   if (!/^\d+$/.test(limit)) {
-    console.log("hi");
     return Promise.reject({ status: 400, msg: "invalid limit query" });
   }
   if (!/^\d+$/.test(offset)) {
-    console.log("hi");
     return Promise.reject({ status: 400, msg: "invalid offset query" });
   }
   const p = offset * limit;

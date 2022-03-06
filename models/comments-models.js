@@ -1,10 +1,19 @@
 const db = require("../db/connection");
 
-exports.fetchCommentsByArticleId = (article_id) => {
+exports.fetchCommentsByArticleId = (article_id, limit = 10, offset = 0) => {
+  if (!/^\d+$/.test(limit)) {
+    return Promise.reject({ status: 400, msg: "invalid limit query" });
+  }
+  if (!/^\d+$/.test(offset)) {
+    return Promise.reject({ status: 400, msg: "invalid offset query" });
+  }
+  const p = offset * limit;
   const insertStr = `
-  SELECT * 
+  SELECT *, CAST(COUNT(*) OVER()AS INT) AS full_count 
   FROM comments
   WHERE article_id = $1
+  LIMIT ${limit}
+  OFFSET ${p}
   ;`;
   return db.query(insertStr, [article_id]).then(({ rows }) => {
     return rows;
@@ -46,4 +55,3 @@ exports.updateCommentByCommentId = (votes, comment_id) => {
     return rows[0];
   });
 };
-
