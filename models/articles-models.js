@@ -86,7 +86,7 @@ exports.insertArticle = (username, title, body, topic) => {
   ;`;
   const queryArr = [username, title, body, topic];
   return db.query(insertStr, queryArr).then(({ rows }) => {
-    // rows[0].comment_count = 0;
+    rows[0].comment_count = 0;
 
     return rows[0];
   });
