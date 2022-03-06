@@ -36,8 +36,9 @@ exports.fetchArticles = (
   order = "DESC",
   topic,
   limit = 10,
-  p = 0
+  offset = 0
 ) => {
+  const p = offset * limit;
   if (
     !["article_id", "title", "author", "body", "created_at", "votes"].includes(
       sort_by
@@ -62,7 +63,7 @@ exports.fetchArticles = (
   queryStr += ` GROUP BY articles.article_id
   ORDER BY ${sort_by} ${order}
   LIMIT  ${limit}
-  OFFSET 0;`;
+  OFFSET ${p};`;
   return db.query(queryStr, queryValues).then(({ rows }) => {
     return rows;
   });

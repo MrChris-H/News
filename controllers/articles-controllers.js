@@ -39,8 +39,8 @@ exports.patchArticle = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  const { sort_by, order, topic, limit } = req.query;
-  const proms = [fetchArticles(sort_by, order, topic, limit)];
+  const { sort_by, order, topic, limit, offset } = req.query;
+  const proms = [fetchArticles(sort_by, order, topic, limit, offset)];
   if (topic !== undefined) proms.push(checkExists("topics", "slug", topic));
   Promise.all(proms)
     .then(([articles]) => {
