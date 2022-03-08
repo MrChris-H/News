@@ -617,6 +617,33 @@ describe("The Server", () => {
       });
     });
   });
+  describe("/api/users/:username", () => {
+    describe("GET", () => {
+      it("Status 200, responds with an object containing username, avatar_url and name", () => {
+        return request(app)
+          .get("/api/users/rogersop")
+          .expect(200)
+          .then(({ body: { user } }) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: "rogersop",
+                avatar_url:
+                  "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+                name: "paul",
+              })
+            );
+          });
+      });
+      it("Status 404, when a username that is valid but does not exist is input", () => {
+        return request(app)
+          .get("/api/users/not_a_username")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("resource not found");
+          });
+      });
+    });
+  });
   describe("/api/articles/ (queries)", () => {
     describe(".GET", () => {
       it("Status 200, allow for client to sort by a valid column ", () => {
