@@ -1121,11 +1121,11 @@ describe("The Server", () => {
             expect(comments[0]).toEqual(
               expect.objectContaining({
                 article_id: 1,
-                comment_id: 18,
-                votes: 16,
+                comment_id: 9,
+                votes: 0,
                 created_at: expect.any(String),
-                author: "butter_bridge",
-                body: "This morning, I showered for nine minutes.",
+                author: "icellusedkars",
+                body: "Superficially charming",
                 full_count: 11,
               })
             );
@@ -1153,11 +1153,11 @@ describe("The Server", () => {
             expect(comments[0]).toEqual(
               expect.objectContaining({
                 article_id: 1,
-                comment_id: 2,
-                votes: 14,
+                comment_id: 5,
+                votes: 0,
                 created_at: expect.any(String),
-                author: "butter_bridge",
-                body: "The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.",
+                author: "icellusedkars",
+                body: "I hate streaming noses",
                 full_count: 11,
               })
             );

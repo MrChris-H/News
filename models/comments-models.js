@@ -12,6 +12,7 @@ exports.fetchCommentsByArticleId = (article_id, limit = 10, offset = 0) => {
   SELECT *, CAST(COUNT(*) OVER()AS INT) AS full_count 
   FROM comments
   WHERE article_id = $1
+  ORDER BY created_at DESC
   LIMIT ${limit}
   OFFSET ${p}
   ;`;
