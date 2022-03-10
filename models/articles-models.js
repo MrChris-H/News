@@ -39,9 +39,7 @@ exports.fetchArticles = (
   offset = 0
 ) => {
   if (
-    !["article_id", "title", "author", "body", "created_at", "votes"].includes(
-      sort_by
-    )
+    !["article_id", "title", "author", "created_at", "votes"].includes(sort_by)
   ) {
     return Promise.reject({ status: 400, msg: "invalid sort query" });
   }
