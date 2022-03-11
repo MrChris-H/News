@@ -1,3 +1,4 @@
+
 # [Northcoders News API](https://nc-news-chris.herokuapp.com/)
 
 [NC News Chris](https://nc-news-chris.herokuapp.com/) is a back-end JS project, creating various server endpoints. 
@@ -10,7 +11,7 @@ these requests in order to provide the required responses. These requests includ
 - DELETE
 
 This project was envisioned using a TDD approach and, as a result, all parameters are carefully tested for successful 
-and unsuccessful request-responses, leading to specific errors in the result of an error.
+and unsuccessful request-responses, leading to specific errors in the result of an error. [FRONT END PROJECT](https://github.com/MrChris-H/nc-news)
 ## Run Locally
 ### Requirements
 
@@ -92,5 +93,3 @@ To run utils tests, run the following command
 ## Tech Stack
 
 **Server:** Node, Express
-
-
